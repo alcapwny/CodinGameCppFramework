@@ -1,0 +1,170 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="CGFCodeGenerator" #>
+<#@ import namespace="CGFCodeGenerator.Core" #>
+#pragma once
+
+////////////////////////////////////////////////////////////////////
+// This file is auto generated.
+// *Any modifications to this file will be lost.*
+////////////////////////////////////////////////////////////////////
+
+<#
+    if (SystemIncludes.Count > 0)
+    {
+#>
+//////////////////////////////////
+// System Includes
+
+#if !defined(CODING_EXLUDESYSTEMHEADERS)
+<#
+        foreach(string systemInclude in SystemIncludes)
+        {
+#>
+#include <<#= systemInclude #>>
+<#
+        }
+#>
+#else
+<#
+        foreach(string systemInclude in SystemIncludes)
+        {
+#>
+CODING_EXLUDESYSTEMHEADERS#include <<#= systemInclude #>>
+<#
+        }
+#>
+#endif
+<#
+    }
+#>
+<#
+    if (UserIncludes.Count > 0)
+    {
+#>
+
+//////////////////////////////////
+// Includes
+
+<#
+        foreach(string userInclude in UserIncludes)
+        {
+#>
+#include <<#= userInclude #>>
+<#
+        }
+#>
+<#
+    }
+#>
+
+//////////////////////////////////
+
+<#
+    CGFDocument cgfDocument = CGFDocument;
+
+	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+	{
+		if (cgfTypeSymbol.IsEnum)
+		{
+#>
+enum class <#= cgfTypeSymbol.Name #>
+{
+<#
+			foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+			{
+#>
+	<#= cgfFieldSymbol.Name #> = <#= cgfFieldSymbol.ConstantValue #>,
+<#
+			}
+#>
+};
+
+std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+<#
+		}
+		else
+		{
+#>
+class <#= cgfTypeSymbol.Name #>
+{
+public:
+    friend std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+    friend std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+
+<#
+			for(int accessibility = 0; accessibility < 3; ++accessibility)
+			{
+				string accessibilityString;
+				List<CGFFieldSymbol> fields;
+				switch(accessibility)
+				{
+					case 0:
+						fields = cgfTypeSymbol.PublicFields;
+						accessibilityString = "public";
+						break;
+					case 1:
+						fields = cgfTypeSymbol.ProtectedFields;
+						accessibilityString = "protected";
+						break;
+					case 2:
+						fields = cgfTypeSymbol.PrivateFields;
+						accessibilityString = "private";
+						break;
+					default:
+						fields = null;
+						accessibilityString = "error";
+						break;
+				}
+
+				if (fields.Count > 0)
+				{
+#>
+<#= accessibilityString #>:
+<#
+					foreach(CGFFieldSymbol cgfFieldSymbol in fields)
+					{
+						CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+
+						string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
+						
+						FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
+						VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
+						if (fieldFixedSizeArrayAttribute != null)
+						{
+#>
+    std::array<<#= cppType #>, <#= fieldFixedSizeArrayAttribute.ArraySize #>> <#= cgfFieldSymbol.Name #>;
+<#
+						}
+						else if (fieldVariableSizeArrayAttribute != null)
+						{
+#>
+    std::vector<<#= cppType #>> <#= cgfFieldSymbol.Name #>;
+<#
+						}
+						else
+						{
+#>
+    <#= cppType #> <#= cgfFieldSymbol.Name #>;
+<#
+					}
+				}
+			}
+		}
+#>
+};
+<#
+    }
+#>
+
+//////////////////////////////////
+
+<#
+    }
+#>
+#include <<#=RelativeInlinePath#>>
+#include <<#=RelativeUserPath#>>

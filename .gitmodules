@@ -1,0 +1,3 @@
+[submodule "dependencies/Sharpmake"]
+	path = dependencies/Sharpmake
+	url = https://github.com/ubisoft/Sharpmake

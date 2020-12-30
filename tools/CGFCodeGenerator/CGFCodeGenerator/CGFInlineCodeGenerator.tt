@@ -1,0 +1,193 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="CGFCodeGenerator" #>
+<#@ import namespace="CGFCodeGenerator.Core" #>
+////////////////////////////////////////////////////////////////////
+// This file is auto generated. 
+// *Any modifications to this file will be lost.*
+////////////////////////////////////////////////////////////////////
+
+<#
+    CGFDocument cgfDocument = CGFDocument;
+
+	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+	{
+		CGFAttributeDataList typeAttributes = cgfTypeSymbol.Attributes;
+		SerializeAttribute typeSerializeAttribute = typeAttributes.GetAttribute<SerializeAttribute>();
+		if (typeSerializeAttribute != null)
+			continue;
+
+		if (cgfTypeSymbol.IsEnum)
+			continue;
+
+		bool isFrameData = typeAttributes.GetAttribute<FrameDataAttribute>() != null;
+		bool isGlobalData = typeAttributes.GetAttribute<GlobalDataAttribute>() != null;
+		bool isGlobalOrFrameData = isFrameData || isGlobalData;
+#>
+std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>)
+{
+<#
+	    foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+	    {
+			CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+
+            string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
+            string variableName = cgfTypeSymbol.VariableName + "." + cgfFieldSymbol.Name;
+
+			bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
+            bool isLastField = cgfTypeSymbol.Fields[cgfTypeSymbol.Fields.Count - 1] == cgfFieldSymbol;
+	
+			bool isStandaloneFieldType = false;
+			if (cgfFieldSymbol.TypeSymbol != null)
+			{
+				SerializeAttribute fieldTypeSerializeAttribute = cgfFieldSymbol.TypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
+				isStandaloneFieldType = fieldTypeSerializeAttribute != null && fieldTypeSerializeAttribute.Flags == SerializeFlags.CallbackFullLine;
+			}
+            bool appendWithIgnore = !isStandaloneFieldType && (isLastField && isGlobalOrFrameData || !isLastField);
+
+			FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
+			VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
+            if (fieldFixedSizeArrayAttribute != null || fieldVariableSizeArrayAttribute != null)
+            {
+                string arraySizeVariableName;
+                if (fieldFixedSizeArrayAttribute != null)
+                {
+                    arraySizeVariableName = fieldFixedSizeArrayAttribute.ArraySize.ToString();
+                }
+                else
+                {
+                    arraySizeVariableName = cgfTypeSymbol.VariableName + "." + fieldVariableSizeArrayAttribute.ArraySizeFieldName;
+                }
+                    
+                if (fieldVariableSizeArrayAttribute != null)
+                {
+#>
+    <#= variableName #>.resize(<#= arraySizeVariableName #>);
+<#
+                }
+#>
+    for(int i = 0; i < <#= arraySizeVariableName #>; ++i)
+    {
+        inputStream >> <#= variableName #>[i];<# if (appendWithIgnore) { #> inputStream.ignore();<# } #> 
+    }
+<#
+            }
+            else //Not an array
+            {
+#>
+    inputStream >> <#= variableName #>;<# if (appendWithIgnore) { #> inputStream.ignore();<# } #> 
+<#
+            }
+        }
+#>
+
+    return inputStream;
+}
+
+std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>)
+{
+<#
+        if (isFrameData)
+        {
+#>
+    Logging::LogInputData(outputStream) << "Frame Input:" << Game::GetFrameCounter() << std::endl;
+
+<#
+        }
+        else if (isGlobalData)
+        {
+#>
+    Logging::LogInputData(outputStream) << "Global Input:" << std::endl;
+
+<#
+        }
+
+        CGFFieldSymbol previousSerializableFieldSymbol = null;
+	    foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+	    {
+			CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+
+            string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
+            string variableName = cgfTypeSymbol.VariableName + "." + cgfFieldSymbol.Name;
+
+			bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
+
+			bool isStandaloneFieldType = false;
+			if (cgfFieldSymbol.TypeSymbol != null)
+			{
+				SerializeAttribute fieldTypeSerializeAttribute = cgfFieldSymbol.TypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
+				isStandaloneFieldType = fieldTypeSerializeAttribute != null && fieldTypeSerializeAttribute.Flags == SerializeFlags.CallbackFullLine;
+			}
+
+            bool prependWithLogging = !isStandaloneFieldType 
+				&& ((isFirstField && isGlobalOrFrameData) || (!isFirstField && (previousSerializableFieldSymbol.Attributes.GetAttribute<GroupWithNextAttribute>() == null)));
+
+			FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
+			VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
+            if (fieldFixedSizeArrayAttribute != null || fieldVariableSizeArrayAttribute != null)
+            {
+                string arraySizeVariableName;
+                if (fieldFixedSizeArrayAttribute != null)
+                {
+                    arraySizeVariableName = fieldFixedSizeArrayAttribute.ArraySize.ToString();
+                }
+                else
+                {
+                    arraySizeVariableName = cgfTypeSymbol.VariableName + "." + fieldVariableSizeArrayAttribute.ArraySizeFieldName;
+                }
+#>
+    for(int i = 0; i < <#= arraySizeVariableName #>; ++i)
+    {
+        <# if (prependWithLogging) { #>Logging::LogInputData(outputStream)<# } else { #>outputStream<# } #> << <#= variableName #>[i];
+<# 
+				if (!isStandaloneFieldType)
+				{
+					if (fieldAttributes.GetAttribute<GroupWithNextAttribute>() != null)
+					{
+#>
+        bool isLastIndex = i == (<#= arraySizeVariableName #> - 1);
+        if (!isLastIndex)
+        {
+            outputStream << " ";
+        }
+        else
+        {
+            outputStream << std::endl;
+        }
+<#
+					}
+					else //!IsGroupWithNext
+					{
+#>
+        outputStream << std::endl;
+<#
+					} //IsGroupWithNext
+				} //IsSystemType
+#>
+    }
+<#
+            }
+            else //Not an array
+            {
+                bool isLastField = cgfTypeSymbol.Fields[cgfTypeSymbol.Fields.Count - 1] == cgfFieldSymbol;
+                bool appendWithEndl = !isStandaloneFieldType && (isLastField && isGlobalOrFrameData || ((!isLastField || isGlobalOrFrameData) && (fieldAttributes.GetAttribute<GroupWithNextAttribute>() == null)));
+                bool appendWithSpace = !isStandaloneFieldType && (isLastField && isGlobalOrFrameData || !isLastField);
+#>
+    <# if (prependWithLogging) { #>Logging::LogInputData(outputStream)<# } else { #>outputStream<# } #> << <#= variableName #><# if (appendWithEndl) { #> << std::endl<# } else if (appendWithSpace) { #> << " "<# } #>;
+<#
+            }
+
+			previousSerializableFieldSymbol = cgfFieldSymbol;
+        }
+#>
+
+    return outputStream;
+}
+
+//////////////////////////////////
+<#
+    }
+#>

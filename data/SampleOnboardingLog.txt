@@ -1,0 +1,180 @@
+Game information:
+15 threats approaching fast !
+Threats within range:
+Rock 70m
+00
+15
+Standard Error Stream:
+Log: Frame Input:0
+Log: Nobody 9999 Rock 70
+Standard Output Stream:
+Rock
+Game information:
+Rock has been targeted
+Threats within range:
+HotDroid 70m
+01
+15
+Standard Error Stream:
+Log: Frame Input:1
+Log: Nobody 9999 HotDroid 70
+Standard Output Stream:
+HotDroid
+Game information:
+HotDroid has been targeted
+Threats within range:
+HardHat 70m
+Bolt 70m
+02
+15
+Standard Error Stream:
+Log: Frame Input:2
+Log: HardHat 70 Bolt 70
+Standard Output Stream:
+Bolt
+Game information:
+Bolt has been targeted
+Threats within range:
+Sectoid 56m
+HardHat 60m
+03
+15
+Standard Error Stream:
+Log: Frame Input:3
+Log: Sectoid 56 HardHat 60
+Standard Output Stream:
+Sectoid
+Game information:
+Sectoid has been targeted
+Threats within range:
+HardHat 50m
+Buzz 59m
+04
+15
+Standard Error Stream:
+Log: Frame Input:4
+Log: Buzz 59 HardHat 50
+Standard Output Stream:
+HardHat
+Game information:
+HardHat has been targeted
+Threats within range:
+Buzz 38m
+Zap 40m
+05
+15
+Standard Error Stream:
+Log: Frame Input:5
+Log: Zap 40 Buzz 38
+Standard Output Stream:
+Buzz
+Game information:
+Buzz has been targeted
+Threats within range:
+Zap 20m
+Charger 34m
+06
+15
+Standard Error Stream:
+Log: Frame Input:6
+Log: Zap 20 Charger 34
+Standard Output Stream:
+Zap
+Game information:
+Zap has been targeted
+Threats within range:
+Charger 14m
+Whacker 36m
+07
+15
+Standard Error Stream:
+Log: Frame Input:7
+Log: Whacker 36 Charger 14
+Standard Output Stream:
+Charger
+Game information:
+Charger has been targeted
+Threats within range:
+Whacker 14m
+MaulMaker 35m
+08
+15
+Standard Error Stream:
+Log: Frame Input:8
+Log: Whacker 14 MaulMaker 35
+Standard Output Stream:
+Whacker
+Game information:
+Whacker has been targeted
+Threats within range:
+MaulMaker 16m
+Fuse 39m
+09
+15
+Standard Error Stream:
+Log: Frame Input:9
+Log: Fuse 39 MaulMaker 16
+Standard Output Stream:
+MaulMaker
+Game information:
+MaulMaker has been targeted
+Threats within range:
+Fuse 19m
+NutCracker 46m
+10
+15
+Standard Error Stream:
+Log: Frame Input:10
+Log: Fuse 19 NutCracker 46
+Standard Output Stream:
+Fuse
+Game information:
+Fuse has been targeted
+Threats within range:
+NutCracker 22m
+Buster 32m
+11
+15
+Standard Error Stream:
+Log: Frame Input:11
+Log: Buster 32 NutCracker 22
+Standard Output Stream:
+NutCracker
+Game information:
+NutCracker has been targeted
+Threats within range:
+Buster 8m
+Hitbot 43m
+12
+15
+Standard Error Stream:
+Log: Frame Input:12
+Log: Hitbot 43 Buster 8
+Standard Output Stream:
+Buster
+Game information:
+Buster has been targeted
+Threats within range:
+Hitbot 26m
+DangerDart 40m
+13
+15
+Standard Error Stream:
+Log: Frame Input:13
+Log: Hitbot 26 DangerDart 40
+Standard Output Stream:
+Hitbot
+Game information:
+Hitbot has been targeted
+Threats within range:
+DangerDart 35m
+14
+15
+Standard Error Stream:
+Log: Frame Input:14
+Log: Nobody 9999 DangerDart 35
+Standard Output Stream:
+DangerDart
+Game information:
+Success: You eliminated the threat
+No ships remaining.
