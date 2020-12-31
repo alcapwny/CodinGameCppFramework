@@ -2,4 +2,4 @@ This is a CodinGame C++ Framework (CGF for short) which was made to allow you to
 
 This was made with a Windows/Visual Studio local work environment in mind.
 
-Go to [[Wiki]] for more documentation!
+Go to [Wiki](https://github.com/alcapwny/CodinGameCppFramework/wiki) for more documentation!
