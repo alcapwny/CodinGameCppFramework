@@ -20,7 +20,7 @@ namespace CGFCodeGenerator
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+    #line 1 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CGFHeaderCodeGenerator : CGFHeaderCodeGeneratorBase
     {
@@ -35,7 +35,7 @@ namespace CGFCodeGenerator
                     " lost.*\r\n////////////////////////////////////////////////////////////////////\r\n\r" +
                     "\n");
             
-            #line 15 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 15 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     if (SystemIncludes.Count > 0)
     {
@@ -46,7 +46,7 @@ namespace CGFCodeGenerator
             this.Write("//////////////////////////////////\r\n// System Includes\r\n\r\n#if !defined(CODING_EXL" +
                     "UDESYSTEMHEADERS)\r\n");
             
-            #line 23 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 23 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         foreach(string systemInclude in SystemIncludes)
         {
@@ -56,14 +56,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("#include <");
             
-            #line 27 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 27 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(systemInclude));
             
             #line default
             #line hidden
             this.Write(">\r\n");
             
-            #line 28 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 28 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         }
 
@@ -72,7 +72,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("#else\r\n");
             
-            #line 32 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 32 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         foreach(string systemInclude in SystemIncludes)
         {
@@ -82,14 +82,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("CODING_EXLUDESYSTEMHEADERS#include <");
             
-            #line 36 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 36 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(systemInclude));
             
             #line default
             #line hidden
             this.Write(">\r\n");
             
-            #line 37 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 37 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         }
 
@@ -98,7 +98,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("#endif\r\n");
             
-            #line 41 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 41 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     }
 
@@ -106,7 +106,7 @@ namespace CGFCodeGenerator
             #line default
             #line hidden
             
-            #line 44 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 44 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     if (UserIncludes.Count > 0)
     {
@@ -116,7 +116,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("\r\n//////////////////////////////////\r\n// Includes\r\n\r\n");
             
-            #line 52 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 52 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         foreach(string userInclude in UserIncludes)
         {
@@ -126,14 +126,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("#include <");
             
-            #line 56 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 56 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(userInclude));
             
             #line default
             #line hidden
             this.Write(">\r\n");
             
-            #line 57 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 57 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
         }
 
@@ -141,7 +141,7 @@ namespace CGFCodeGenerator
             #line default
             #line hidden
             
-            #line 60 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 60 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     }
 
@@ -150,7 +150,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("\r\n//////////////////////////////////\r\n\r\n");
             
-            #line 66 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 66 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     CGFDocument cgfDocument = CGFDocument;
 
@@ -164,14 +164,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("enum class ");
             
-            #line 74 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 74 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n");
             
-            #line 76 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 76 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 			foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
 			{
@@ -181,21 +181,21 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("\t");
             
-            #line 80 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 80 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfFieldSymbol.Name));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 80 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 80 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfFieldSymbol.ConstantValue));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 81 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 81 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 			}
 
@@ -204,35 +204,35 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("};\r\n\r\nstd::istream& operator>>(std::istream& inputStream, ");
             
-            #line 86 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 86 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 86 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 86 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
             #line hidden
             this.Write(");\r\nstd::ostream& operator<<(std::ostream& outputStream, const ");
             
-            #line 87 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 87 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 87 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 87 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 88 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 88 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 		}
 		else
@@ -243,42 +243,42 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("class ");
             
-            #line 93 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 93 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\npublic:\r\n    friend std::istream& operator>>(std::istream& inputStream, ");
             
-            #line 96 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 96 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 96 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 96 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
             #line hidden
             this.Write(");\r\n    friend std::ostream& operator<<(std::ostream& outputStream, const ");
             
-            #line 97 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 97 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 97 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 97 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
             #line hidden
             this.Write(");\r\n\r\n");
             
-            #line 99 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 99 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 			for(int accessibility = 0; accessibility < 3; ++accessibility)
 			{
@@ -311,14 +311,14 @@ namespace CGFCodeGenerator
             #line default
             #line hidden
             
-            #line 127 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 127 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(accessibilityString));
             
             #line default
             #line hidden
             this.Write(":\r\n");
             
-            #line 128 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 128 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 					foreach(CGFFieldSymbol cgfFieldSymbol in fields)
 					{
@@ -326,63 +326,108 @@ namespace CGFCodeGenerator
 
 						string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
 						
-						FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
-						VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
-						if (fieldFixedSizeArrayAttribute != null)
+						ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
+						if (arrayAttribute != null)
 						{
+							//Start by indenting the line
 
             
             #line default
             #line hidden
-            this.Write("    std::array<");
+            this.Write("    ");
             
-            #line 140 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 139 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+
+							//Write the array type
+							List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+							for (int i = (arrayDimensions.Count - 1); i >= 0; --i)
+							{
+								ArrayDimension dimension = arrayDimensions[i];
+								if (dimension.IsFixedSize)
+								{
+
+            
+            #line default
+            #line hidden
+            this.Write("std::array<");
+            
+            #line 148 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+								}
+								else
+								{
+
+            
+            #line default
+            #line hidden
+            this.Write("std::vector<");
+            
+            #line 152 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+								}
+							}
+
+
+            
+            #line default
+            #line hidden
+            
+            #line 156 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cppType));
+            
+            #line default
+            #line hidden
+            
+            #line 156 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+							for (int i = 0; i < arrayDimensions.Count; ++i)
+							{
+								ArrayDimension dimension = arrayDimensions[i];
+								if (dimension.IsFixedSize)
+								{
+
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 140 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(fieldFixedSizeArrayAttribute.ArraySize));
+            #line 162 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dimension.SizeString));
             
             #line default
             #line hidden
-            this.Write("> ");
+            this.Write(">");
             
-            #line 140 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 162 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+								}
+								else
+								{
+
+            
+            #line default
+            #line hidden
+            this.Write(">");
+            
+            #line 166 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+
+								}
+							}
+
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 169 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfFieldSymbol.Name));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 141 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
-
-						}
-						else if (fieldVariableSizeArrayAttribute != null)
-						{
-
-            
-            #line default
-            #line hidden
-            this.Write("    std::vector<");
-            
-            #line 146 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(cppType));
-            
-            #line default
-            #line hidden
-            this.Write("> ");
-            
-            #line 146 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(cgfFieldSymbol.Name));
-            
-            #line default
-            #line hidden
-            this.Write(";\r\n");
-            
-            #line 147 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 170 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 						}
 						else
@@ -393,21 +438,21 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("    ");
             
-            #line 152 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 175 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cppType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 152 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 175 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfFieldSymbol.Name));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 153 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 176 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
 					}
 				}
@@ -419,7 +464,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("};\r\n");
             
-            #line 160 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 183 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     }
 
@@ -428,7 +473,7 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("\r\n//////////////////////////////////\r\n\r\n");
             
-            #line 166 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 189 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
 
     }
 
@@ -437,14 +482,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("#include <");
             
-            #line 169 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 192 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(RelativeInlinePath));
             
             #line default
             #line hidden
             this.Write(">\r\n#include <");
             
-            #line 170 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
+            #line 193 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFHeaderCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(RelativeUserPath));
             
             #line default

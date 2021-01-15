@@ -92,16 +92,16 @@ namespace CGFCodeGenerator
                 {
                     foreach (CGFFieldSymbol field in type.Fields)
                     {
-                        if (field.Attributes.GetAttribute<FixedSizeArrayAttribute>() != null)
+			            CGFAttributeDataList fieldAttributes = field.Attributes;
+                        ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
+                        if (arrayAttribute != null)
                         {
-                            systemIncludes.Add("array");
+                            foreach(ArrayDimension dimension in arrayAttribute.Dimensions)
+                            {
+                                systemIncludes.Add(dimension.LibraryName);
+                            }
                         }
-
-                        if (field.Attributes.GetAttribute<VariableSizeArrayAttribute>() != null)
-                        {
-                            systemIncludes.Add("vector");
-                        }
-
+                        
                         if (field.IsSystemType && field.UnderlyingSpecialType == SpecialType.System_String)
                         {
                             systemIncludes.Add("string");

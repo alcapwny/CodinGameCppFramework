@@ -7,6 +7,6 @@ public class SampleAsciiArtGlobalInputData
     public int m_Height;
     public LineString m_Text;
 
-    [VariableSizeArray("m_Height")]
+    [Array("m_Height")]
     public LineString m_AsciiArtRows;
 }

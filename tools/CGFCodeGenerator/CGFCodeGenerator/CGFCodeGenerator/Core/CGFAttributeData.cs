@@ -7,7 +7,7 @@ namespace CGFCodeGenerator.Core
 
         public static CGFAttributeData Parse(CGFParserReporter reporter, Microsoft.CodeAnalysis.AttributeData attributeData)
         {
-            //TODO - Add way to have custom validation for VariableSizeArrayAttribute to validate variable name actually matches an serialized variable
+            //TODO - Add way to have custom validation for ArrayAttribute to validate variable name actually matches an serialized variable
             Type attributeType = Type.GetType(attributeData.AttributeClass.ToString(), false);
             Type baseAttributeType = typeof(CGFAttribute);
             if (!attributeType.IsSubclassOf(baseAttributeType))

@@ -48,32 +48,67 @@ std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <
 			}
             bool appendWithIgnore = !isStandaloneFieldType && (isLastField && isGlobalOrFrameData || !isLastField);
 
-			FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
-			VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
-            if (fieldFixedSizeArrayAttribute != null || fieldVariableSizeArrayAttribute != null)
+            ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
+            if (arrayAttribute != null)
             {
-                string arraySizeVariableName;
-                if (fieldFixedSizeArrayAttribute != null)
-                {
-                    arraySizeVariableName = fieldFixedSizeArrayAttribute.ArraySize.ToString();
-                }
-                else
-                {
-                    arraySizeVariableName = cgfTypeSymbol.VariableName + "." + fieldVariableSizeArrayAttribute.ArraySizeFieldName;
-                }
-                    
-                if (fieldVariableSizeArrayAttribute != null)
-                {
+                string indentationIncrement = "    ";
+                string indentation = indentationIncrement;
+                string arrayVariableName = variableName;
+                
+			    List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+                int arrayIndexCount = arrayDimensions.Count - 1;
+			    for (int i = arrayIndexCount; i >= 0; --i)
+			    {
+				    ArrayDimension dimension = arrayDimensions[i];
+                    string variableNameSuffix = new string('i', (arrayDimensions.Count - i));
+                    string loopVariableName = new string('i', (arrayDimensions.Count - i));
+
+                    string arraySize;
+				    if (dimension.IsFixedSize)
+				    {
+                        arraySize = dimension.SizeString;
+				    }
+				    else
+				    {
+                        arraySize = cgfTypeSymbol.VariableName + "." + dimension.SizeString;
+				    }
+
+                    if (dimension.IsVariableSize)
+                    {
 #>
-    <#= variableName #>.resize(<#= arraySizeVariableName #>);
+<#= indentation #><#= arrayVariableName #>.resize(<#= arraySize #>);
+<#
+                    }
+#>
+<#= indentation #>for(int <#= loopVariableName #> = 0; <#= loopVariableName #> < <#= arraySize #>; ++<#= loopVariableName #>)
+<#= indentation #>{
+<#
+                    indentation += indentationIncrement;
+
+                    if (i != 0)
+                    {
+                        ArrayDimension nextDimension = arrayDimensions[i - 1];
+                        string nextArrayVariableName = cgfTypeSymbol.VariableName + "_" + variableNameSuffix;
+#>
+<#= indentation #>auto& <#= nextArrayVariableName #> = <#= arrayVariableName #>[<#= loopVariableName #>];
+<#
+                        arrayVariableName = nextArrayVariableName;
+                    }
+                    else
+                    {
+#>
+<#= indentation #>inputStream >> <#= arrayVariableName #>[<#= loopVariableName #>];<# if (appendWithIgnore) { #> inputStream.ignore();<# } #> 
+<#
+                    }
+			    }
+
+                for (int i = 0; i < arrayDimensions.Count; ++i)
+			    {
+                    indentation = indentation.Remove(indentation.Length - indentationIncrement.Length);
+#>
+<#= indentation #>}
 <#
                 }
-#>
-    for(int i = 0; i < <#= arraySizeVariableName #>; ++i)
-    {
-        inputStream >> <#= variableName #>[i];<# if (appendWithIgnore) { #> inputStream.ignore();<# } #> 
-    }
-<#
             }
             else //Not an array
             {
@@ -125,50 +160,83 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
             bool prependWithLogging = !isStandaloneFieldType 
 				&& ((isFirstField && isGlobalOrFrameData) || (!isFirstField && (previousSerializableFieldSymbol.Attributes.GetAttribute<GroupWithNextAttribute>() == null)));
 
-			FixedSizeArrayAttribute fieldFixedSizeArrayAttribute = fieldAttributes.GetAttribute<FixedSizeArrayAttribute>();
-			VariableSizeArrayAttribute fieldVariableSizeArrayAttribute = fieldAttributes.GetAttribute<VariableSizeArrayAttribute>();
-            if (fieldFixedSizeArrayAttribute != null || fieldVariableSizeArrayAttribute != null)
+            ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
+            if (arrayAttribute != null)
             {
-                string arraySizeVariableName;
-                if (fieldFixedSizeArrayAttribute != null)
-                {
-                    arraySizeVariableName = fieldFixedSizeArrayAttribute.ArraySize.ToString();
-                }
-                else
-                {
-                    arraySizeVariableName = cgfTypeSymbol.VariableName + "." + fieldVariableSizeArrayAttribute.ArraySizeFieldName;
-                }
+                string indentationIncrement = "    ";
+                string indentation = indentationIncrement;
+                string arrayVariableName = variableName;
+                
+			    List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+                int arrayIndexCount = arrayDimensions.Count - 1;
+			    for (int i = arrayIndexCount; i >= 0; --i)
+			    {
+				    ArrayDimension dimension = arrayDimensions[i];
+                    string variableNameSuffix = new string('i', (arrayDimensions.Count - i));
+                    string loopVariableName = new string('i', (arrayDimensions.Count - i));
+
+                    string arraySize;
+				    if (dimension.IsFixedSize)
+				    {
+                        arraySize = dimension.SizeString;
+				    }
+				    else
+				    {
+                        arraySize = cgfTypeSymbol.VariableName + "." + dimension.SizeString;
+				    }
 #>
-    for(int i = 0; i < <#= arraySizeVariableName #>; ++i)
-    {
-        <# if (prependWithLogging) { #>Logging::LogInputData(outputStream)<# } else { #>outputStream<# } #> << <#= variableName #>[i];
+<#= indentation #>for(int <#= loopVariableName #> = 0; <#= loopVariableName #> < <#= arraySize #>; ++<#= loopVariableName #>)
+<#= indentation #>{
+<#
+                    indentation += indentationIncrement;
+
+                    if (i != 0)
+                    {
+                        ArrayDimension nextDimension = arrayDimensions[i - 1];
+                        string nextArrayVariableName = cgfTypeSymbol.VariableName + "_" + variableNameSuffix;
+#>
+<#= indentation #>auto& <#= nextArrayVariableName #> = <#= arrayVariableName #>[<#= loopVariableName #>];
+<#
+                        arrayVariableName = nextArrayVariableName;
+                    }
+                    else
+                    {
+#>
+<#= indentation #><# if (prependWithLogging) { #>Logging::LogInputData(outputStream)<# } else { #>outputStream<# } #> << <#= arrayVariableName #>[<#= loopVariableName #>];
 <# 
-				if (!isStandaloneFieldType)
-				{
-					if (fieldAttributes.GetAttribute<GroupWithNextAttribute>() != null)
-					{
+                        if (!isStandaloneFieldType)
+                        {
+                            if (fieldAttributes.GetAttribute<GroupWithNextAttribute>() != null)
+                            {
 #>
-        bool isLastIndex = i == (<#= arraySizeVariableName #> - 1);
-        if (!isLastIndex)
-        {
-            outputStream << " ";
-        }
-        else
-        {
-            outputStream << std::endl;
-        }
+<#= indentation #>bool isLastIndex = i == (<#= arraySize #> - 1);
+<#= indentation #>if (!isLastIndex)
+<#= indentation #>{
+<#= indentation #>    outputStream << " ";
+<#= indentation #>}
+<#= indentation #>else
+<#= indentation #>{
+<#= indentation #>    outputStream << std::endl;
+<#= indentation #>}
 <#
-					}
-					else //!IsGroupWithNext
-					{
+                            }
+                            else //!IsGroupWithNext
+                            {
 #>
-        outputStream << std::endl;
+<#= indentation #>outputStream << std::endl;
 <#
-					} //IsGroupWithNext
-				} //IsSystemType
+                            } //IsGroupWithNext
+                        } //IsSystemType
+                    }
+			    }
+
+                for (int i = 0; i < arrayDimensions.Count; ++i)
+			    {
+                    indentation = indentation.Remove(indentation.Length - indentationIncrement.Length);
 #>
-    }
+<#= indentation #>}
 <#
+                }
             }
             else //Not an array
             {
