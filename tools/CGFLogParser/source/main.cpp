@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 
 	bool isFirst = true;
 	std::string line;
-	while (getline(inputFile, line).good())
+	while (getline(inputFile, line))
 	{
 		StringUtils::Trim(line);
 		if (line.compare(0, logStringLength, logString) == 0)
