@@ -8,19 +8,27 @@ public class CGFPuzzleProject : CGFProject
 {
     public static string RootFolderName = "codingamePuzzles";
 
-    public CGFPuzzleProject(string projectName, string folderName)
+    public CGFPuzzleProject(string projectName, string folderName, string filterName)
     {
         AddTargets(CGFTargets.GetCommonTargets());
 
         Name = projectName;
         FolderName = RootFolderName + @"\" + folderName;
+        FilterName = filterName;
     }
 
     public override void ConfigureAll(Configuration conf, Target target)
     {
         base.ConfigureAll(conf, target);
 
-        conf.SolutionFolder = "Puzzles";
+        if (string.IsNullOrEmpty(FilterName))
+        {
+            conf.SolutionFolder = "Puzzles";
+        }
+        else
+        {
+            conf.SolutionFolder = string.Format("Puzzles/{0}", FilterName);
+        }
 
         conf.AddPublicDependency<CGFFrameworkProject>(target);
 
@@ -38,6 +46,13 @@ public class CGFPuzzleProject : CGFProject
             conf.Options.Add(Options.Vc.Compiler.MultiProcessorCompilation.Disable);
         }
     }
+
+    private string _filterName = "";
+    public string FilterName
+    {
+        get { return _filterName; }
+        set { SetProperty(ref _filterName, value); }
+    }
 }
 
 [Generate]
@@ -45,10 +60,11 @@ public class CGFPuzzleCSharpProject : CGFCSharpProject
 {
     public static string RootFolderName = "codingamePuzzles";
 
-    public CGFPuzzleCSharpProject(string projectName, string folderName)
+    public CGFPuzzleCSharpProject(string projectName, string folderName, string filterName)
     {
         Name = projectName + "CSharp";
         FolderName = RootFolderName + @"\" + folderName;
+        FilterName = filterName;
     }
 
     public override void ConfigureAll(Configuration conf, Target target)
@@ -57,10 +73,24 @@ public class CGFPuzzleCSharpProject : CGFCSharpProject
 
         base.ConfigureAll(conf, target);
 
-        conf.SolutionFolder = "Puzzles";
+        if (string.IsNullOrEmpty(FilterName))
+        {
+            conf.SolutionFolder = "Puzzles";
+        }
+        else
+        {
+            conf.SolutionFolder = string.Format("Puzzles/{0}", FilterName);
+        }
 
         conf.ReferencesByPath.Add(@"[conf.ProjectPath]\..\..\..\bin\CGFCodeGenerator\CGFCodeGenerator.exe");
 
         conf.AddPublicDependency<CGFFrameworkCSharpProject>(target);
+    }
+
+    private string _filterName = "";
+    public string FilterName
+    {
+        get { return _filterName; }
+        set { SetProperty(ref _filterName, value); }
     }
 }

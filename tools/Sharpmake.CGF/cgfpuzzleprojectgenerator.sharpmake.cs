@@ -24,17 +24,20 @@ class CGFPuzzleProjectGenerator : CGFProject
 
     //Generate a list of types that corresponds Sharpmake projects. One project is created for each file matching the search pattern (.cpp, .cs, etc).
     // For example, this allows each cpp file to have its own main() function.
-    // To do this we create a dynamic assembly and generate custom types at runtime. These types are children of
-    // the passed in types, such as CGFPuzzleProject. This is needed as you cannot add multiple instances of the same project type
-    // in a Sharpmake solution, which makes sense to resolve project dependencies.
+    // To do this we create a dynamic assembly and generate custom types at runtime. These types are children of the passed in types, 
+    // such as CGFPuzzleProject. This is needed as you cannot add multiple instances of the same project type in a Sharpmake solution, 
+    // which makes sense to resolve project dependencies.
+    // Projects can be placed in sub-folders which will be used to create filters within the project.
     // rootPath: Expected to point to the path where all project folders are. Expected structure:
     //      rootPath/ProjectA/source/ProjectA.cpp
-    //      rootPath/ProjectB/source/Main.cpp
+    //      rootPath/ProjectB/source/ProjectB.cpp
+    //      rootPath/FilterA/ProjectC/source/ProjectC.cpp
+    //      rootPath/FilterB/FilterC/ProjectD/source/ProjectD.cpp
     //      ...
     // projectGenerationParam: The list of project types to generate with their search pattern
     //      CGFPuzzleProject - *.cpp
     //      CGFPuzzleCSharpProject - *.cs
-    //      Note: This assumes a constructor of type ProjectType(string projectName, string folderName) 
+    //      Note: This assumes a constructor of type ProjectType(string projectName, string folderName, string filterName) 
     public List<Type>[] GenerateCodinGamePuzzleProjects(string rootPath, CGFPuzzleProjectGenerationParam[] projectGenerationParam)
     {
         //Create a dynamic assembly to which will host a child type of the types passed in projectGenerationParam for each file found matching the provided search pattern
@@ -72,8 +75,8 @@ class CGFPuzzleProjectGenerator : CGFProject
             string[] filePathList = Util.DirectoryGetFiles(resolvedCodinGamePuzzlesDirectoryPath, generationParam.FileSearchPattern, SearchOption.AllDirectories);
             List<string> relativeFilePathList = Util.PathGetRelative(resolvedCodinGamePuzzlesDirectoryPath, new Strings(filePathList));
 
-            //Get ProjectType(string projectName, string folderName) constructor
-            ConstructorInfo codingamePuzzleProjectConstructor = generationParam.ProjectType.GetConstructor(new Type[] { typeof(string), typeof(string) });
+            //Get ProjectType(string projectName, string folderName, string filterName) constructor
+            ConstructorInfo codingamePuzzleProjectConstructor = generationParam.ProjectType.GetConstructor(new Type[] { typeof(string), typeof(string), typeof(string) });
 
             //Generate project types
             foreach (string relativeFilePath in relativeFilePathList)
@@ -89,17 +92,20 @@ class CGFPuzzleProjectGenerator : CGFProject
                     pathName = Path.GetDirectoryName(pathName);
                 }
 
-                string projectTypeName = pathName + fileName;
+                string filterName = Path.GetDirectoryName(pathName);
+                string projectName = Path.GetFileName(pathName); //Use GetFileName to get the last directory name...
+
+                string projectTypeName = projectName + fileName; //Note: This means that conflicts can occur if the same project folder/filename combination in different sub-folders exists
                 if (!csharpProvider.IsValidIdentifier(projectTypeName))
                 {
-                    Console.WriteLine("Project name ({0}) generated from ({1}) does not comply with C# identifer rules. Update your path/filename to remove illegal characters in order to create a valid type name.");
+                    throw new Error("Project name ({0}) generated from ({1}) does not comply with C# identifer rules. Update your path/filename to remove illegal characters in order to create a valid type name.", projectTypeName, relativeFilePath);
                 }
 
                 //Generate a type of the following format:
                 //[Generate]
                 //class GeneratedProjectType : ProjectType
                 //{
-                //    GeneratedProjectType() : ProjectType("fileName", "pathName") { }
+                //    GeneratedProjectType() : ProjectType("fileName", "pathName", "filterName") { }
                 //}
                 TypeBuilder typeBuilder = moduleBuilder.DefineType(projectTypeName, TypeAttributes.Public | TypeAttributes.Class, generationParam.ProjectType);
                 typeBuilder.SetCustomAttribute(customAttributeBuilder);
@@ -110,9 +116,10 @@ class CGFPuzzleProjectGenerator : CGFProject
 
                 // Generate constructor code
                 constructorIL.Emit(OpCodes.Ldarg_0);         //push "this" onto stack.
-                constructorIL.Emit(OpCodes.Ldstr, pathName); //push the project name onto the stack
+                constructorIL.Emit(OpCodes.Ldstr, projectName); //push the project name onto the stack
                 constructorIL.Emit(OpCodes.Ldstr, pathName); //push the folder name onto the stack
-                constructorIL.Emit(OpCodes.Call, codingamePuzzleProjectConstructor); //call ProjectType(string projectName, string folderName) constructor
+                constructorIL.Emit(OpCodes.Ldstr, filterName); //push the filterName name onto the stack
+                constructorIL.Emit(OpCodes.Call, codingamePuzzleProjectConstructor); //call ProjectType(string projectName, string folderName, string filterName) constructor
                 constructorIL.Emit(OpCodes.Ret);             //return
 
                 Type generatedProjectType = typeBuilder.CreateType();
