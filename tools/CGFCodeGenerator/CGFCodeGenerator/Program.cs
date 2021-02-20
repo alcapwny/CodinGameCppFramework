@@ -162,7 +162,11 @@ namespace CGFCodeGenerator
             }
             else
             {
-                File.WriteAllText(filepath, fileContents);
+                string previousFileContents = File.ReadAllText(filepath);
+                if (previousFileContents != fileContents)
+                {
+                    File.WriteAllText(filepath, fileContents);
+                }
             }
         }
 
