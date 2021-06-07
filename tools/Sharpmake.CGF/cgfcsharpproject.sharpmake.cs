@@ -6,7 +6,7 @@ public abstract class CGFCSharpProject : CSharpProject
 {
     public CGFCSharpProject()
     {
-        AddTargets(CGFTargets.GetCommonTargetsNoRetail());
+        AddTargets(CGFTargets.GetCommonTargetsNoPreprocessToFile());
 
         IsFileNameToLower = true;
 
@@ -39,11 +39,6 @@ public abstract class CGFCSharpProject : CSharpProject
         set { SetProperty(ref _codingameRootPath, value); }
     }
 
-    private string _folderName = "";
-    public string FolderName
-    {
-        get { return _folderName; }
-        set { SetProperty(ref _folderName, value); }
-    }
+    public string FolderName { get; set; }
 }
 

@@ -7,13 +7,10 @@ class CGFLogParserProject : CGFProject
 {
     public CGFLogParserProject()
     {
-        AddTargets(CGFTargets.GetCommonTargetsNoRetail());
-
-        RootPath = @"[project.CodinGameRootPath]\tools\[project.FolderName]";
-        SourceRootPath = @"[project.CodinGameRootPath]\tools\[project.FolderName]";
+        AddTargets(CGFTargets.GetCommonTargetsNoPreprocessToFile());
 
         Name = "CGFLogParser";
-        FolderName = "CGFLogParser";
+        FolderName = @"tools\CGFLogParser";
     }
 
     public override void ConfigureAll(Configuration conf, Target target)

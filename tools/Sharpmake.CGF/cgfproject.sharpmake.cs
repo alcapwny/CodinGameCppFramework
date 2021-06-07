@@ -6,6 +6,11 @@ public abstract class CGFProject : Project
 {
     public static readonly string PreprocessToFile = "PreprocessToFile";
 
+    public static bool IsPreprocessToFile(Optimization optimization)
+    {
+        return optimization == Optimization.Retail;
+    }
+
     public CGFProject()
     {
         RootPath = @"[project.CodinGameRootPath]\[project.FolderName]";
@@ -15,9 +20,6 @@ public abstract class CGFProject : Project
     [Configure]
     public virtual void ConfigureAll(Project.Configuration conf, Target target)
     {
-        conf.IncludePaths.Add(@"[project.SourceRootPath]\source");
-        conf.IncludePaths.Add(@"[project.SourceRootPath]\generated");
-
         //Paths
         conf.ProjectPath = @"[project.SharpmakeCsPath]\..\..\build\generated\projects\";
 
@@ -42,9 +44,13 @@ public abstract class CGFProject : Project
 
         //Additional options
         conf.Options.Add(Options.Vc.General.CharacterSet.Unicode);
-        conf.Options.Add(Options.Vc.Compiler.MinimalRebuild.Disable);
+        conf.Options.Add(Options.Vc.General.DebugInformation.ProgramDatabaseEnC);
+
+        conf.Options.Add(Options.Vc.Compiler.CppLanguageStandard.CPP17);
 
         conf.Options.Add(Options.Vc.Linker.GenerateMapFile.Disable);
+
+        conf.Options.Add(new Sharpmake.Options.Vc.Compiler.DisableSpecificWarnings("4100")); //Warning	C4100 - unreferenced formal parameter
     }
 
     private string _codingameRootPath = @"..\..";
@@ -53,12 +59,5 @@ public abstract class CGFProject : Project
         get { return _codingameRootPath; }
         set { SetProperty(ref _codingameRootPath, value); }
     }
-
-    private string _folderName = "";
-    public string FolderName
-    {
-        get { return _folderName; }
-        set { SetProperty(ref _folderName, value); }
-    }
+    public string FolderName { get; set; }
 }
-

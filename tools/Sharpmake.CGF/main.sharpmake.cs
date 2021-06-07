@@ -48,7 +48,7 @@ class CodinGameSolution : Solution
     {
         conf.SolutionPath = @"[solution.SharpmakeCsPath]\..\..\build\generated";
 
-        if (target.Optimization == Optimization.Retail)
+        if (CGFProject.IsPreprocessToFile(target.Optimization))
         {
             conf.Name = CGFProject.PreprocessToFile; 
         }
@@ -60,7 +60,7 @@ class CodinGameSolution : Solution
             conf.AddProject(projectType, target);
         }
 
-        if (target.Optimization != Optimization.Retail)
+        if (!CGFProject.IsPreprocessToFile(target.Optimization))
         {
             conf.AddProject<CGFFrameworkCSharpProject>(target);
 
@@ -79,7 +79,7 @@ class CodinGameToolsSolution : Solution
     {
         Name = "codingameTools";
 
-        AddTargets(CGFTargets.GetCommonTargetsNoRetail());
+        AddTargets(CGFTargets.GetCommonTargetsNoPreprocessToFile());
     }
 
     [Configure]
@@ -87,7 +87,7 @@ class CodinGameToolsSolution : Solution
     {
         conf.SolutionPath = @"[solution.SharpmakeCsPath]\..\..\build\generated";
 
-        if (target.Optimization != Optimization.Retail)
+        if (!CGFProject.IsPreprocessToFile(target.Optimization))
         {
             conf.AddProject<CGFLogParserProject>(target);
             conf.AddProject<CGFPuzzleGeneratorCSharpProject>(target);

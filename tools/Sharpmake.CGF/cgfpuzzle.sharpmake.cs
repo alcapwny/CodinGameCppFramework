@@ -21,6 +21,9 @@ public class CGFPuzzleProject : CGFProject
     {
         base.ConfigureAll(conf, target);
 
+        conf.IncludePaths.Add(@"[project.SourceRootPath]\source");
+        conf.IncludePaths.Add(@"[project.SourceRootPath]\generated");
+
         if (string.IsNullOrEmpty(FilterName))
         {
             conf.SolutionFolder = "Puzzles";
@@ -32,10 +35,15 @@ public class CGFPuzzleProject : CGFProject
 
         conf.AddPublicDependency<CGFFrameworkProject>(target);
 
-        if (target.Optimization != Optimization.Retail)
+        if (!CGFProject.IsPreprocessToFile(target.Optimization))
         {
             //Define to indicate that we are compiling for local debugging
             conf.Defines.Add("CODING_LOCALDEBUGGING");
+
+            if (target.Optimization == Optimization.Debug)
+            {
+                conf.Options.Add(Options.Vc.Compiler.Inline.Disable); //Some functions not marked as inline were being inlined...
+            }
         }
         else
         {
@@ -43,7 +51,6 @@ public class CGFPuzzleProject : CGFProject
             conf.AdditionalCompilerOptions.Add(@"/DCODING_EXLUDESYSTEMHEADERS=");
 
             conf.Options.Add(Options.Vc.Compiler.GenerateProcessorFile.WithoutLineNumbers);
-            conf.Options.Add(Options.Vc.Compiler.MultiProcessorCompilation.Disable);
         }
     }
 

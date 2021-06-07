@@ -8,11 +8,8 @@ class CGFPuzzleGeneratorCSharpProject : CGFCSharpProject
 {
     public CGFPuzzleGeneratorCSharpProject()
     {
-        RootPath = @"[project.CodinGameRootPath]\tools\[project.FolderName]";
-        SourceRootPath = @"[project.CodinGameRootPath]\tools\[project.FolderName]";
-
         Name = "CGFPuzzleGenerator";
-        FolderName = "CGFPuzzleGenerator";
+        FolderName = @"tools\CGFPuzzleGenerator";
     }
 
     public override void ConfigureAll(Configuration conf, Target target)

@@ -17,11 +17,6 @@ class CGFPuzzleProjectGenerationParam
 
 class CGFPuzzleProjectGenerator : CGFProject
 {
-    public CGFPuzzleProjectGenerator()
-    {
-        FolderName = CGFPuzzleProject.RootFolderName;
-    }
-
     //Generate a list of types that corresponds Sharpmake projects. One project is created for each file matching the search pattern (.cpp, .cs, etc).
     // For example, this allows each cpp file to have its own main() function.
     // To do this we create a dynamic assembly and generate custom types at runtime. These types are children of the passed in types, 
@@ -52,7 +47,7 @@ class CGFPuzzleProjectGenerator : CGFProject
         }
 
         //Get path to search for CodinGame puzzle files from
-        string codingamePuzzlesPath = rootPath + @"\" + SourceRootPath;
+        string codingamePuzzlesPath = rootPath + @"\" + CodinGameRootPath + @"\" + CGFPuzzleProject.RootFolderName;
         {
             Resolver resolver = new Resolver();
             resolver.SetParameter("project", this);

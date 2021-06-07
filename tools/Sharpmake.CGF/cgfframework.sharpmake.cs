@@ -19,6 +19,9 @@ class CGFFrameworkProject : CGFProject
 
         base.ConfigureAll(conf, target);
 
+        conf.IncludePaths.Add(@"[project.SourceRootPath]\source");
+        conf.IncludePaths.Add(@"[project.SourceRootPath]\generated");
+
         conf.SolutionFolder = "Framework";
     }
 }

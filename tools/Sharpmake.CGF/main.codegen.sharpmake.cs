@@ -17,7 +17,7 @@ class CodinGameCodeGenSolution : Solution
     {
         Name = "codingameCodeGen";
 
-        AddTargets(CGFTargets.GetCommonTargetsNoRetail());
+        AddTargets(CGFTargets.GetCommonTargetsNoPreprocessToFile());
 
         CGFPuzzleProjectGenerator codingamePuzzlesProjectGenerator = new CGFPuzzleProjectGenerator();
 

@@ -15,7 +15,7 @@ class CGFTargets
                 DotNetFramework.v4_7_2)};
     }
 
-    public static Target[] GetCommonTargetsNoRetail()
+    public static Target[] GetCommonTargetsNoPreprocessToFile()
     {
         return new Target[]{
             new Target(
@@ -26,31 +26,6 @@ class CGFTargets
                 Blob.NoBlob,
                 BuildSystem.MSBuild,
                 DotNetFramework.v4_7_2)};
-    }
-
-    public static Target GetNoRetailTarget(Target target)
-    {
-        switch (target.Optimization)
-        {
-            case Optimization.Debug:
-            case Optimization.Release:
-                {
-                    return target;
-                }
-            case Optimization.Retail:
-                {
-                    return new Target(
-                        target.Platform,
-                        target.DevEnv,
-                        Optimization.Release,
-                        target.OutputType,
-                        target.Blob,
-                        target.BuildSystem,
-                        target.Framework);
-                }
-        }
-
-        return null;
     }
 }
 
