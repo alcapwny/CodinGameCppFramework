@@ -14,6 +14,8 @@
 //////////////////////////////////
 // Includes
 
+#include <codingame/defines.h>
+#include <codingame/assert.h>
 #include <codingame/logging.h>
 #include <codingame/game.h>
 
