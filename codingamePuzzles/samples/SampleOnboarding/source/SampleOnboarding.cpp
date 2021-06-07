@@ -26,14 +26,12 @@
 int main()
 {
     Game game("SampleOnboarding.txt");
-    std::istream& dataStream = game.GetDataStream();
 
     // game loop
-    while (Game::RunGameLoop(dataStream))
+    while (game.RunGameLoop())
     {
         SampleOnboardingFrameInputData frameData;
-        dataStream >> frameData;
-        Logging::GetInputDataStream() << frameData;
+        game.SerializeFrameData(frameData);
 
         if (frameData.m_Dist1 < frameData.m_Dist2)
         {

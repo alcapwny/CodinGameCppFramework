@@ -26,18 +26,15 @@
 int main()
 {
     Game game("$puzzlename$.txt");
-    std::istream& dataStream = game.GetDataStream();
 
     $puzzlename$GlobalInputData globalData;
-    dataStream >> globalData;
-    Logging::GetInputDataStream() << globalData;
+    game.SerializeGlobalData(globalData);
 
     // game loop
-    while (Game::RunGameLoop(dataStream))
+    while (game.RunGameLoop())
     {
         $puzzlename$FrameInputData frameData;
-        dataStream >> frameData;
-        Logging::GetInputDataStream() << frameData;
+        game.SerializeFrameData(frameData);
 
         // game loop code
     }

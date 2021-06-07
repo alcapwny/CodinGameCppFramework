@@ -26,11 +26,9 @@
 int main()
 {
     Game game("SampleAsciiArt.txt");
-    std::istream& dataStream = game.GetDataStream();
 
     SampleAsciiArtGlobalInputData globalData;
-    dataStream >> globalData;
-    Logging::GetInputDataStream() << globalData;
+    game.SerializeGlobalData(globalData);
 
     const int textLength = globalData.m_Text.m_String.size();
     const char* text = globalData.m_Text.m_String.c_str();
