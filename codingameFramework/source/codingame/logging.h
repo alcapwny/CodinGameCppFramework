@@ -15,7 +15,6 @@ public:
 
     static std::ostream& LogDebug()
     {
-        std::cerr << "Debug: ";
         return std::cerr;
     }
 
