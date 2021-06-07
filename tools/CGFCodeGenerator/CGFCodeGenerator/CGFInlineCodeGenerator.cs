@@ -134,7 +134,7 @@ namespace CGFCodeGenerator
             
             #line default
             #line hidden
-            this.Write(".resize(");
+            this.Write(".resize((unsigned int)");
             
             #line 79 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFInlineCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(arraySize));

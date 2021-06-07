@@ -14,6 +14,10 @@
                     return "long long int";
                 case "UInt64":
                     return "unsigned long long int";
+                case "Single":
+                    return "float";
+                case "Double":
+                    return "double";
                 case "String":
                     return "std::string";
                 case "Boolean":

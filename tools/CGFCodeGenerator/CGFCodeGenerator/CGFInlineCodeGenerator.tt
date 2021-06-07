@@ -76,7 +76,7 @@ std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <
                     if (dimension.IsVariableSize)
                     {
 #>
-<#= indentation #><#= arrayVariableName #>.resize(<#= arraySize #>);
+<#= indentation #><#= arrayVariableName #>.resize((unsigned int)<#= arraySize #>);
 <#
                     }
 #>
