@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cgfcore.sharpmake.cs" />
     <Compile Include="cgfcsharpproject.sharpmake.cs" />
+    <Compile Include="cgfimgui.sharpmake.cs" />
     <Compile Include="cgflogparser.sharpmake.cs" />
     <Compile Include="cgfproject.sharpmake.cs" />
     <Compile Include="cgfpuzzle.sharpmake.cs" />
@@ -48,6 +50,7 @@
     <Compile Include="cgfpuzzlegenerator.sharpmake.cs" />
     <Compile Include="cgfpuzzleprojectgenerator.sharpmake.cs" />
     <Compile Include="cgftargets.sharpmake.cs" />
+    <Compile Include="imgui.sharpmake.cs" />
     <Compile Include="main.codegen.sharpmake.cs" />
     <Compile Include="main.sharpmake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

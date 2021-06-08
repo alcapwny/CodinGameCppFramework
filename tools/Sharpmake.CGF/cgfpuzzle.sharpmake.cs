@@ -2,6 +2,7 @@
 
 [module: Sharpmake.Include("cgfproject.sharpmake.cs")]
 [module: Sharpmake.Include("cgfcsharpproject.sharpmake.cs")]
+[module: Sharpmake.Include("cgfimgui.sharpmake.cs")]
 
 [Generate]
 public class CGFPuzzleProject : CGFProject
@@ -34,6 +35,10 @@ public class CGFPuzzleProject : CGFProject
         }
 
         conf.AddPublicDependency<CGFFrameworkProject>(target);
+        if (!CGFProject.IsPreprocessToFile(target.Optimization))
+        {
+            conf.AddPublicDependency<CGFImGuiProject>(target);
+        }
 
         if (!CGFProject.IsPreprocessToFile(target.Optimization))
         {
