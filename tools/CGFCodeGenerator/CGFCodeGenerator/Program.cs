@@ -14,6 +14,9 @@ namespace CGFCodeGenerator
 
     class Program
     {
+        static string UserFileHeaderTag = "/////////////////////////////////////////////////////////////////////////////////////";
+        static string UserFileHashTag = "///Hash:";
+
         enum ExitCode
         {
             Success = 0,
@@ -129,11 +132,7 @@ namespace CGFCodeGenerator
 
                 WriteFile(headerPath, headerCode);
                 WriteFile(inlinePath, inlineCode);
-                if (!File.Exists(userPath))
-                {
-                    //Only write the user file if it doesn't already exist as we don't want to override user code
-                    WriteFile(userPath, userCode);
-                }
+                WriteUserFile(userPath, userCode, reporter);
             }
 
             long elapsedMS = stopwatch.ElapsedMilliseconds;
@@ -168,6 +167,104 @@ namespace CGFCodeGenerator
                     File.WriteAllText(filepath, fileContents);
                 }
             }
+        }
+
+        static void WriteUserFile(string filepath, string fileContents, CGFParserReporter reporter)
+        {
+            if (!File.Exists(filepath))
+            {
+                string directory = Path.GetDirectoryName(filepath);
+                Directory.CreateDirectory(directory);
+
+                string newFileContents = GenerateUserFileWithHash(filepath, fileContents);
+                File.WriteAllText(filepath, newFileContents);
+            }
+            else
+            {
+                //Get previous file hash
+                string[] existingFileStrings = File.ReadAllLines(filepath, Encoding.UTF8);
+
+                if (existingFileStrings.Length < 2)
+                {
+                    reporter.LogWarning(filepath + " has unexpected content. This file will not be modified. To have it automatically regenerated delete the file and rerun the code generator.");
+                    return;
+                }
+
+                if (!existingFileStrings[1].StartsWith(UserFileHashTag))
+                {
+                    reporter.LogWarning(filepath + " has unexpected content. This file will not be modified. To have it automatically regenerated delete the file and rerun the code generator.");
+                    return;
+                }
+
+                string existingFileHash = existingFileStrings[1].Substring(UserFileHashTag.Length);
+
+                //Calculate previous file hash
+                StringBuilder existingFileNoHashBuilder = new StringBuilder();
+                for (int i = 2; i < existingFileStrings.Length; i++)
+                {
+                    existingFileNoHashBuilder.Append(existingFileStrings[i]);
+                    existingFileNoHashBuilder.Append(System.Environment.NewLine);
+                }
+                string existingFileContentsNoHash = existingFileNoHashBuilder.ToString();
+                string calculatedHash = ComputeHashString(existingFileContentsNoHash);
+
+                if (calculatedHash != existingFileHash)
+                {
+                    reporter.LogInfo(filepath + " has a hash that does not match the calculated file hash. This likely means it was modified by hand. This file will not be modified. To have it automatically regenerated delete the file and rerun the code generator.");
+                    return;
+                }
+
+                //Create one string with the contents of the existingFile
+                StringBuilder existingFileBuilder = new StringBuilder();
+                for (int i = 0; i < existingFileStrings.Length; i++)
+                {
+                    existingFileBuilder.Append(existingFileStrings[i]);
+                    existingFileBuilder.Append(System.Environment.NewLine);
+                }
+                string existingFileContents = existingFileBuilder.ToString();
+
+                //Create string for new contents
+                string newFileContents = GenerateUserFileWithHash(filepath, fileContents);
+
+                //Only write file if contents are different
+                if (existingFileContents != newFileContents)
+                {
+                    File.WriteAllText(filepath, newFileContents);
+                }
+            }
+        }
+
+        static string ComputeHashString(string content)
+        {
+            System.Security.Cryptography.SHA256 sha256 = System.Security.Cryptography.SHA256.Create();
+            byte[] contentBytes = Encoding.UTF8.GetBytes(content);
+            byte[] hashBytes = sha256.ComputeHash(contentBytes);
+
+            // Convert byte array to a string   
+            StringBuilder hashBuilder = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                hashBuilder.Append(hashBytes[i].ToString("x2"));
+            }
+            string hashString = hashBuilder.ToString();
+            return hashString;
+        }
+
+        static string GenerateUserFileWithHash(string filepath, string fileContents)
+        {
+            string hashString = ComputeHashString(fileContents);
+
+            StringBuilder fileContentsBuilder = new StringBuilder();
+            fileContentsBuilder.Append(UserFileHeaderTag);
+            fileContentsBuilder.Append(System.Environment.NewLine);
+
+            fileContentsBuilder.Append(UserFileHashTag);
+            fileContentsBuilder.Append(hashString);
+            fileContentsBuilder.Append(System.Environment.NewLine);
+
+            fileContentsBuilder.Append(fileContents);
+
+            return fileContentsBuilder.ToString();
         }
 
         static public string ReplaceFolderInPath(string sourcePath, string folderToReplace, string replacingFolder)

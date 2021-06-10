@@ -20,7 +20,7 @@ namespace CGFCodeGenerator
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+    #line 1 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CGFUserCodeGenerator : CGFUserCodeGeneratorBase
     {
@@ -30,17 +30,17 @@ namespace CGFCodeGenerator
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"////////////////////////////////////////////////////////////////////
-// This file is only auto generated if it doesn't exist. 
-// *Modify away!*
-////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////
-// System Includes
+            this.Write(@"/////////////////////////////////////////////////////////////////////////////////////
+// This file is generated when it doesn't exist or when the generated content changes
+// and this file hasn't been modified by the user (that is, the calculated hash
+// matches the hash in this file).
+//
+// *Modify as needed!*
+/////////////////////////////////////////////////////////////////////////////////////
 
 ");
             
-            #line 16 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 16 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
 
     CGFDocument cgfDocument = CGFDocument;
 
@@ -55,14 +55,14 @@ namespace CGFCodeGenerator
             #line hidden
             this.Write("std::istream& operator>>(std::istream& inputStream, ");
             
-            #line 25 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 25 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 25 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 25 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
@@ -70,21 +70,22 @@ namespace CGFCodeGenerator
             this.Write(")\r\n{\r\n\r\n\r\n    return inputStream;\r\n}\r\n\r\nstd::ostream& operator<<(std::ostream& ou" +
                     "tputStream, const ");
             
-            #line 32 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 32 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 32 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 32 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
             #line hidden
-            this.Write(")\r\n{\r\n\r\n\r\n    return outputStream;\r\n}\r\n\r\n//////////////////////////////////\r\n");
+            this.Write(")\r\n{\r\n\r\n\r\n    return outputStream;\r\n}\r\n\r\n////////////////////////////////////////" +
+                    "/////////////////////////////////////////////\r\n");
             
-            #line 40 "D:\Files\Projects\Codingame\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 40 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
 
     }
 

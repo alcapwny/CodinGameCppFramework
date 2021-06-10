@@ -7,88 +7,43 @@
 <#@ import namespace="CGFCodeGenerator.Core" #>
 #pragma once
 
-////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 // This file is auto generated.
 // *Any modifications to this file will be lost.*
-////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////////////////////////////
 <#
-    if (SystemIncludes.Count > 0)
-    {
-#>
-//////////////////////////////////
-// System Includes
-
-#if !defined(CODING_EXLUDESYSTEMHEADERS)
-<#
-        foreach(string systemInclude in SystemIncludes)
-        {
-#>
-#include <<#= systemInclude #>>
-<#
-        }
-#>
-#else
-<#
-        foreach(string systemInclude in SystemIncludes)
-        {
-#>
-CODING_EXLUDESYSTEMHEADERS#include <<#= systemInclude #>>
-<#
-        }
-#>
-#endif
-<#
-    }
-#>
-<#
-    if (UserIncludes.Count > 0)
-    {
+    WriteSystemIncludes(SystemIncludes);
+    WriteUserIncludes(UserIncludes);
 #>
 
-//////////////////////////////////
-// Includes
-
-<#
-        foreach(string userInclude in UserIncludes)
-        {
-#>
-#include <<#= userInclude #>>
-<#
-        }
-#>
-<#
-    }
-#>
-
-//////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 
 <#
     CGFDocument cgfDocument = CGFDocument;
 
-	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
-	{
-		if (cgfTypeSymbol.IsEnum)
-		{
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        if (cgfTypeSymbol.IsEnum)
+        {
 #>
 enum class <#= cgfTypeSymbol.Name #>
 {
 <#
-			foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
-			{
+            foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+            {
 #>
-	<#= cgfFieldSymbol.Name #> = <#= cgfFieldSymbol.ConstantValue #>,
+    <#= cgfFieldSymbol.Name #> = <#= cgfFieldSymbol.ConstantValue #>,
 <#
-			}
+            }
 #>
 };
 
 std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
 std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
 <#
-		}
-		else
-		{
+        }
+        else
+        {
 #>
 class <#= cgfTypeSymbol.Name #>
 {
@@ -97,97 +52,155 @@ public:
     friend std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
 
 <#
-			for(int accessibility = 0; accessibility < 3; ++accessibility)
-			{
-				string accessibilityString;
-				List<CGFFieldSymbol> fields;
-				switch(accessibility)
-				{
-					case 0:
-						fields = cgfTypeSymbol.PublicFields;
-						accessibilityString = "public";
-						break;
-					case 1:
-						fields = cgfTypeSymbol.ProtectedFields;
-						accessibilityString = "protected";
-						break;
-					case 2:
-						fields = cgfTypeSymbol.PrivateFields;
-						accessibilityString = "private";
-						break;
-					default:
-						fields = null;
-						accessibilityString = "error";
-						break;
-				}
+            for(int accessibility = 0; accessibility < 3; ++accessibility)
+            {
+                string accessibilityString;
+                List<CGFFieldSymbol> fields;
+                switch(accessibility)
+                {
+                    case 0:
+                        fields = cgfTypeSymbol.PublicFields;
+                        accessibilityString = "public";
+                        break;
+                    case 1:
+                        fields = cgfTypeSymbol.ProtectedFields;
+                        accessibilityString = "protected";
+                        break;
+                    case 2:
+                        fields = cgfTypeSymbol.PrivateFields;
+                        accessibilityString = "private";
+                        break;
+                    default:
+                        fields = null;
+                        accessibilityString = "error";
+                        break;
+                }
 
-				if (fields.Count > 0)
-				{
+                if (fields.Count > 0)
+                {
 #>
 <#= accessibilityString #>:
 <#
-					foreach(CGFFieldSymbol cgfFieldSymbol in fields)
-					{
-						CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+                    foreach(CGFFieldSymbol cgfFieldSymbol in fields)
+                    {
+                        CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
 
-						string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
-						
-						ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
-						if (arrayAttribute != null)
-						{
-							//Start by indenting the line
+                        string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
+                        
+                        ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
+                        if (arrayAttribute != null)
+                        {
+                            //Start by indenting the line
 #>    <#
 
-							//Write the array type
-							List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
-							for (int i = (arrayDimensions.Count - 1); i >= 0; --i)
-							{
-								ArrayDimension dimension = arrayDimensions[i];
-								if (dimension.IsFixedSize)
-								{
+                            //Write the array type
+                            List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+                            for (int i = (arrayDimensions.Count - 1); i >= 0; --i)
+                            {
+                                ArrayDimension dimension = arrayDimensions[i];
+                                if (dimension.IsFixedSize)
+                                {
 #>std::array<<#
-								}
-								else
-								{
+                                }
+                                else
+                                {
 #>std::vector<<#
-								}
-							}
+                                }
+                            }
 
 #><#= cppType #><#
-							for (int i = 0; i < arrayDimensions.Count; ++i)
-							{
-								ArrayDimension dimension = arrayDimensions[i];
-								if (dimension.IsFixedSize)
-								{
+                            for (int i = 0; i < arrayDimensions.Count; ++i)
+                            {
+                                ArrayDimension dimension = arrayDimensions[i];
+                                if (dimension.IsFixedSize)
+                                {
 #>, <#= dimension.SizeString #>><#
-								}
-								else
-								{
+                                }
+                                else
+                                {
 #>><#
-								}
-							}
+                                }
+                            }
 #> <#= cgfFieldSymbol.Name #>;
 <#
-						}
-						else
-						{
+                        }
+                        else
+                        {
 #>
     <#= cppType #> <#= cgfFieldSymbol.Name #>;
 <#
-					}
-				}
-			}
-		}
+                    }
+                }
+            }
+        }
 #>
 };
 <#
     }
 #>
 
-//////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 
 <#
     }
 #>
 #include <<#=RelativeInlinePath#>>
 #include <<#=RelativeUserPath#>>
+<#+
+    /////////////////////////////////////////////////////////////////////////////////////
+    /// Function blocks
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    void WriteSystemIncludes(HashSet<string> systemIncludes)
+    {
+        if (systemIncludes.Count > 0)
+        {
+#>
+
+/////////////////////////////////////////////////////////////////////////////////////
+// System Includes
+
+#if !defined(CODING_EXLUDESYSTEMHEADERS)
+<#+
+            foreach(string systemInclude in SystemIncludes)
+            {
+#>
+#include <<#= systemInclude #>>
+<#+
+            }
+#>
+#else
+<#+
+            foreach(string systemInclude in SystemIncludes)
+            {
+#>
+CODING_EXLUDESYSTEMHEADERS#include <<#= systemInclude #>>
+<#+
+            }
+#>
+#endif
+<#+
+        }
+    }
+#>
+<#+
+
+    void WriteUserIncludes(HashSet<string> userIncludes)
+    {
+        if (userIncludes.Count > 0)
+        {
+#>
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Includes
+
+<#+
+            foreach(string userInclude in userIncludes)
+            {
+#>
+#include <<#= userInclude #>>
+<#+
+            }
+        }
+    }
+#>

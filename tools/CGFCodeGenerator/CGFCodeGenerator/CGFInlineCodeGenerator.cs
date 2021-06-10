@@ -30,9 +30,12 @@ namespace CGFCodeGenerator
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("////////////////////////////////////////////////////////////////////\r\n// This fil" +
-                    "e is auto generated. \r\n// *Any modifications to this file will be lost.*\r\n//////" +
-                    "//////////////////////////////////////////////////////////////\r\n\r\n");
+            this.Write(@"/////////////////////////////////////////////////////////////////////////////////////
+// This file is auto generated. 
+// *Any modifications to this file will be lost.*
+/////////////////////////////////////////////////////////////////////////////////////
+
+");
             
             #line 13 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFInlineCodeGenerator.tt"
 
@@ -761,7 +764,8 @@ namespace CGFCodeGenerator
             
             #line default
             #line hidden
-            this.Write("\r\n    return outputStream;\r\n}\r\n\r\n//////////////////////////////////\r\n");
+            this.Write("\r\n    return outputStream;\r\n}\r\n\r\n////////////////////////////////////////////////" +
+                    "/////////////////////////////////////\r\n");
             
             #line 259 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFInlineCodeGenerator.tt"
 
