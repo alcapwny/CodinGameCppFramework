@@ -8,27 +8,27 @@
 class StringUtils
 {
 public:
-	// trim from left
-	static std::string& LeftTrim(std::string& input)
-	{
-		input.erase(input.begin(), std::find_if(input.begin(), input.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		return input;
-	}
+    // trim from left
+    static std::string& LeftTrim(std::string& input)
+    {
+        input.erase(input.begin(), std::find_if(input.begin(), input.end(), [](unsigned char character) { return !std::isspace(character); }));
+        return input;
+    }
 
-	// trim from right
-	static std::string& RightTrim(std::string& input)
-	{
-		input.erase(std::find_if(input.rbegin(), input.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), input.end());
-		return input;
-	}
+    // trim from right
+    static std::string& RightTrim(std::string& input)
+    {
+        input.erase(std::find_if(input.rbegin(), input.rend(), [](unsigned char character) { return !std::isspace(character); }).base(), input.end());
+        return input;
+    }
 
-	// trim from left and right
-	static std::string& Trim(std::string& input)
-	{
-		LeftTrim(input);
-		RightTrim(input);
-		return input;
-	}
+    // trim from left and right
+    static std::string& Trim(std::string& input)
+    {
+        LeftTrim(input);
+        RightTrim(input);
+        return input;
+    }
 };
 
 //
