@@ -20,15 +20,6 @@ class StringUtils
 {
 public:
     static std::vector<std::string> Split(const std::string& input, const char* delimiter);
-
-    // trim from left
-    static std::string& LeftTrim(std::string& input);
-
-    // trim from right
-    static std::string& RightTrim(std::string& input);
-
-    // trim from left and right
-    static std::string& Trim(std::string& input);
 };
 
 #include <string/stringutils.inl>
