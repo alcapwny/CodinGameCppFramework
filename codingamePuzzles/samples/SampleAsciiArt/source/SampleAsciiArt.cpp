@@ -30,13 +30,13 @@ int main()
     SampleAsciiArtGlobalInputData globalData;
     game.SerializeGlobalData(globalData);
 
-    const int textLength = globalData.m_Text.m_String.size();
+    const size_t textLength = globalData.m_Text.m_String.size();
     const char* text = globalData.m_Text.m_String.c_str();
     std::vector<int> letterIndices;
     letterIndices.reserve(textLength);
 
     //Determine letter index
-    for (int i = 0; i < textLength; ++i)
+    for (size_t i = 0; i < textLength; ++i)
     {
         const char letterValue = text[i];
         int index = 0;
