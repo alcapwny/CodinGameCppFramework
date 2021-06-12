@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
-///Hash:76be0e168c3af7a9ea79c9bf5f4f6c24540cb62b5bdc5663e84b5c4b8172069b
+///Hash:b2ccc98f3cc85795b2ab8c04f79cefc846f03a62f863fd2e0561d403bf9524ea
 /////////////////////////////////////////////////////////////////////////////////////
-// This file is generated when it doesn't exist or when the generated contents change
+// This file is generated when it doesn't exist or when the generated content changes
 // and this file hasn't been modified by the user (that is, the calculated hash
 // matches the hash in this file).
 //
@@ -25,7 +25,16 @@ CODING_EXLUDESYSTEMHEADERS#include <string>
 #include <codingame/logging.h>
 
 /////////////////////////////////////////////////////////////////////////////////////
+class LineString : public LineString_Generated
+{
+public:
+    friend std::istream& operator>>(std::istream& inputStream, LineString& lineString);
+    friend std::ostream& operator<<(std::ostream& outputStream, const LineString& lineString);
 
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+// LineString
 std::istream& operator>>(std::istream& inputStream, LineString& lineString)
 {
     getline(inputStream, lineString.m_String);
