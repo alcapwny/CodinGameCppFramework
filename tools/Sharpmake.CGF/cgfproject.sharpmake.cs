@@ -47,6 +47,7 @@ public abstract class CGFProject : Project
         conf.Options.Add(Options.Vc.General.DebugInformation.ProgramDatabaseEnC);
 
         conf.Options.Add(Options.Vc.Compiler.CppLanguageStandard.CPP17);
+        conf.Options.Add(Options.Vc.Compiler.ConformanceMode.Enable);
 
         conf.Options.Add(Options.Vc.Linker.GenerateMapFile.Disable);
 
