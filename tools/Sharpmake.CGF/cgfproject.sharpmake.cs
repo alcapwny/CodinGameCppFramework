@@ -44,14 +44,26 @@ public abstract class CGFProject : Project
 
         //Additional options
         conf.Options.Add(Options.Vc.General.CharacterSet.Unicode);
-        conf.Options.Add(Options.Vc.General.DebugInformation.ProgramDatabaseEnC);
 
         conf.Options.Add(Options.Vc.Compiler.CppLanguageStandard.CPP17);
         conf.Options.Add(Options.Vc.Compiler.ConformanceMode.Enable);
 
         conf.Options.Add(Options.Vc.Linker.GenerateMapFile.Disable);
 
+        if (target.Optimization == Optimization.Debug)
+        {
+            ConfigureEditAndContinue(conf, target);
+        }
+
         conf.Options.Add(new Sharpmake.Options.Vc.Compiler.DisableSpecificWarnings("4100")); //Warning	C4100 - unreferenced formal parameter
+    }
+
+    public void ConfigureEditAndContinue(Project.Configuration conf, Target target)
+    {
+        //Enable Edit and Continue
+        conf.Options.Add(Options.Vc.General.DebugInformation.ProgramDatabaseEnC);
+        conf.Options.Add(Options.Vc.Compiler.FunctionLevelLinking.Enable);
+        conf.Options.Add(Options.Vc.Linker.Incremental.Enable);
     }
 
     private string _codingameRootPath = @"..\..";
