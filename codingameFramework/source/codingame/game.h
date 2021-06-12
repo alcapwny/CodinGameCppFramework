@@ -3,9 +3,11 @@
 #if !defined(CODING_EXLUDESYSTEMHEADERS)
 #include <iostream>
 #include <fstream>
+#include <limits>
 #else
 CODING_EXLUDESYSTEMHEADERS#include <iostream>
 CODING_EXLUDESYSTEMHEADERS#include <fstream>
+CODING_EXLUDESYSTEMHEADERS#include <limits>
 #endif
 
 #include <codingame/assert.h>
