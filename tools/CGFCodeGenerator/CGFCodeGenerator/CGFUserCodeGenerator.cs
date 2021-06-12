@@ -20,7 +20,7 @@ namespace CGFCodeGenerator
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+    #line 1 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CGFUserCodeGenerator : CGFUserCodeGeneratorBase
     {
@@ -40,29 +40,120 @@ namespace CGFCodeGenerator
 
 ");
             
-            #line 16 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 16 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
 
     CGFDocument cgfDocument = CGFDocument;
 
-	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
-	{
-		SerializeAttribute typeSerializeAttribute = cgfTypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
-		if ((typeSerializeAttribute == null && !cgfTypeSymbol.IsEnum) || (typeSerializeAttribute != null && typeSerializeAttribute.Flags != SerializeFlags.Callback && typeSerializeAttribute.Flags != SerializeFlags.CallbackFullLine))
-			continue;
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        if (cgfTypeSymbol.IsEnum)
+            continue;
+
+        ExtendAttribute typeExtendAttribute = cgfTypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+        if (typeExtendAttribute == null)
+            continue;
+
 
             
             #line default
             #line hidden
-            this.Write("std::istream& operator>>(std::istream& inputStream, ");
+            this.Write("class ");
             
-            #line 25 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 29 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" : public ");
+            
+            #line 29 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.GeneratedName));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n{\r\npublic:\r\n");
+            
+            #line 32 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+
+        if (typeExtendAttribute.HasCustomSerialization)
+        {
+
+            
+            #line default
+            #line hidden
+            this.Write("    friend std::istream& operator>>(std::istream& inputStream, ");
+            
+            #line 36 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 25 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 36 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n    friend std::ostream& operator<<(std::ostream& outputStream, const ");
+            
+            #line 37 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
+            
+            #line default
+            #line hidden
+            this.Write("& ");
+            
+            #line 37 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n");
+            
+            #line 38 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+
+        }
+
+            
+            #line default
+            #line hidden
+            this.Write("\r\n};\r\n\r\n/////////////////////////////////////////////////////////////////////////" +
+                    "////////////\r\n");
+            
+            #line 45 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+
+    }
+
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        ExtendAttribute typeExtendAttribute = cgfTypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+        if (!cgfTypeSymbol.IsEnum && typeExtendAttribute == null)
+            continue;
+
+        if (typeExtendAttribute != null && !typeExtendAttribute.HasCustomSerialization)
+            continue;
+
+            
+            #line default
+            #line hidden
+            this.Write("// ");
+            
+            #line 57 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\nstd::istream& operator>>(std::istream& inputStream, ");
+            
+            #line 58 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
+            
+            #line default
+            #line hidden
+            this.Write("& ");
+            
+            #line 58 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
@@ -70,14 +161,14 @@ namespace CGFCodeGenerator
             this.Write(")\r\n{\r\n\r\n\r\n    return inputStream;\r\n}\r\n\r\nstd::ostream& operator<<(std::ostream& ou" +
                     "tputStream, const ");
             
-            #line 32 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 65 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.Name));
             
             #line default
             #line hidden
             this.Write("& ");
             
-            #line 32 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 65 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cgfTypeSymbol.VariableName));
             
             #line default
@@ -85,7 +176,7 @@ namespace CGFCodeGenerator
             this.Write(")\r\n{\r\n\r\n\r\n    return outputStream;\r\n}\r\n\r\n////////////////////////////////////////" +
                     "/////////////////////////////////////////////\r\n");
             
-            #line 40 "D:\Files\Projects\CodinGameCppFramework\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
+            #line 73 "D:\Files\Projects\CodinGameCppFramework-Private\tools\CGFCodeGenerator\CGFCodeGenerator\CGFUserCodeGenerator.tt"
 
     }
 

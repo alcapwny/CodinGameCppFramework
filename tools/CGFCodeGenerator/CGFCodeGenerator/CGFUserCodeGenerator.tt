@@ -16,12 +16,45 @@
 <#
     CGFDocument cgfDocument = CGFDocument;
 
-	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
-	{
-		SerializeAttribute typeSerializeAttribute = cgfTypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
-		if ((typeSerializeAttribute == null && !cgfTypeSymbol.IsEnum) || (typeSerializeAttribute != null && typeSerializeAttribute.Flags != SerializeFlags.Callback && typeSerializeAttribute.Flags != SerializeFlags.CallbackFullLine))
-			continue;
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        if (cgfTypeSymbol.IsEnum)
+            continue;
+
+        ExtendAttribute typeExtendAttribute = cgfTypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+        if (typeExtendAttribute == null)
+            continue;
+
 #>
+class <#= cgfTypeSymbol.Name #> : public <#= cgfTypeSymbol.GeneratedName #>
+{
+public:
+<#
+        if (typeExtendAttribute.HasCustomSerialization)
+        {
+#>
+    friend std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+    friend std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+<#
+        }
+#>
+
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+<#
+    }
+
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        ExtendAttribute typeExtendAttribute = cgfTypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+        if (!cgfTypeSymbol.IsEnum && typeExtendAttribute == null)
+            continue;
+
+        if (typeExtendAttribute != null && !typeExtendAttribute.HasCustomSerialization)
+            continue;
+#>
+// <#= cgfTypeSymbol.Name #>
 std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>)
 {
 

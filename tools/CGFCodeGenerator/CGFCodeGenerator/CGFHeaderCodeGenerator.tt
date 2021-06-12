@@ -45,13 +45,20 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
         else
         {
 #>
-class <#= cgfTypeSymbol.Name #>
+class <#= cgfTypeSymbol.GeneratedName #>
 {
+<#
+            ExtendAttribute typeExtendAttribute = cgfTypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+            if (typeExtendAttribute == null || !typeExtendAttribute.HasCustomSerialization)
+            {
+#>
 public:
-    friend std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
-    friend std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>);
+    friend std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.GeneratedName #>& <#= cgfTypeSymbol.VariableName #>);
+    friend std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.GeneratedName #>& <#= cgfTypeSymbol.VariableName #>);
 
 <#
+            }
+
             for(int accessibility = 0; accessibility < 3; ++accessibility)
             {
                 string accessibilityString;

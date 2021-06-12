@@ -13,39 +13,34 @@
 <#
     CGFDocument cgfDocument = CGFDocument;
 
-	foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
-	{
-		CGFAttributeDataList typeAttributes = cgfTypeSymbol.Attributes;
-		SerializeAttribute typeSerializeAttribute = typeAttributes.GetAttribute<SerializeAttribute>();
-		if (typeSerializeAttribute != null)
-			continue;
+    foreach(CGFTypeSymbol cgfTypeSymbol in cgfDocument.Types)
+    {
+        CGFAttributeDataList typeAttributes = cgfTypeSymbol.Attributes;
+        ExtendAttribute typeExtendAttribute = typeAttributes.GetAttribute<ExtendAttribute>();
+        if (typeExtendAttribute != null && typeExtendAttribute.HasCustomSerialization)
+            continue;
 
-		if (cgfTypeSymbol.IsEnum)
-			continue;
+        if (cgfTypeSymbol.IsEnum)
+            continue;
 
-		bool isFrameData = typeAttributes.GetAttribute<FrameDataAttribute>() != null;
-		bool isGlobalData = typeAttributes.GetAttribute<GlobalDataAttribute>() != null;
-		bool isGlobalOrFrameData = isFrameData || isGlobalData;
+        bool isFrameData = typeAttributes.GetAttribute<FrameDataAttribute>() != null;
+        bool isGlobalData = typeAttributes.GetAttribute<GlobalDataAttribute>() != null;
+        bool isGlobalOrFrameData = isFrameData || isGlobalData;
 #>
-std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>)
+std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.GeneratedName #>& <#= cgfTypeSymbol.VariableName #>)
 {
 <#
-	    foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
-	    {
-			CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+        foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+        {
+            CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
 
             string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
             string variableName = cgfTypeSymbol.VariableName + "." + cgfFieldSymbol.Name;
 
-			bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
+            bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
             bool isLastField = cgfTypeSymbol.Fields[cgfTypeSymbol.Fields.Count - 1] == cgfFieldSymbol;
-	
-			bool isStandaloneFieldType = false;
-			if (cgfFieldSymbol.TypeSymbol != null)
-			{
-				SerializeAttribute fieldTypeSerializeAttribute = cgfFieldSymbol.TypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
-				isStandaloneFieldType = fieldTypeSerializeAttribute != null && fieldTypeSerializeAttribute.Flags == SerializeFlags.CallbackFullLine;
-			}
+    
+            bool isStandaloneFieldType = IsStandaloneFieldType(cgfFieldSymbol);
             bool appendWithIgnore = !isStandaloneFieldType && (isLastField && isGlobalOrFrameData || !isLastField);
 
             ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
@@ -55,23 +50,23 @@ std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <
                 string indentation = indentationIncrement;
                 string arrayVariableName = variableName;
                 
-			    List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+                List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
                 int arrayIndexCount = arrayDimensions.Count - 1;
-			    for (int i = arrayIndexCount; i >= 0; --i)
-			    {
-				    ArrayDimension dimension = arrayDimensions[i];
+                for (int i = arrayIndexCount; i >= 0; --i)
+                {
+                    ArrayDimension dimension = arrayDimensions[i];
                     string variableNameSuffix = new string('i', (arrayDimensions.Count - i));
                     string loopVariableName = new string('i', (arrayDimensions.Count - i));
 
                     string arraySize;
-				    if (dimension.IsFixedSize)
-				    {
+                    if (dimension.IsFixedSize)
+                    {
                         arraySize = dimension.SizeString;
-				    }
-				    else
-				    {
+                    }
+                    else
+                    {
                         arraySize = cgfTypeSymbol.VariableName + "." + dimension.SizeString;
-				    }
+                    }
 
                     if (dimension.IsVariableSize)
                     {
@@ -100,10 +95,10 @@ std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <
 <#= indentation #>inputStream >> <#= arrayVariableName #>[<#= loopVariableName #>];<# if (appendWithIgnore) { #> inputStream.ignore();<# } #> 
 <#
                     }
-			    }
+                }
 
                 for (int i = 0; i < arrayDimensions.Count; ++i)
-			    {
+                {
                     indentation = indentation.Remove(indentation.Length - indentationIncrement.Length);
 #>
 <#= indentation #>}
@@ -122,7 +117,7 @@ std::istream& operator>>(std::istream& inputStream, <#= cgfTypeSymbol.Name #>& <
     return inputStream;
 }
 
-std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Name #>& <#= cgfTypeSymbol.VariableName #>)
+std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.GeneratedName #>& <#= cgfTypeSymbol.VariableName #>)
 {
 <#
         if (isFrameData)
@@ -141,24 +136,18 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
         }
 
         CGFFieldSymbol previousSerializableFieldSymbol = null;
-	    foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
-	    {
-			CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
+        foreach(CGFFieldSymbol cgfFieldSymbol in cgfTypeSymbol.Fields)
+        {
+            CGFAttributeDataList fieldAttributes = cgfFieldSymbol.Attributes;
 
             string cppType = CGFParserUtils.GetCPPStringForType(cgfFieldSymbol.TypeName);
             string variableName = cgfTypeSymbol.VariableName + "." + cgfFieldSymbol.Name;
 
-			bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
+            bool isFirstField = cgfTypeSymbol.Fields[0] == cgfFieldSymbol;
 
-			bool isStandaloneFieldType = false;
-			if (cgfFieldSymbol.TypeSymbol != null)
-			{
-				SerializeAttribute fieldTypeSerializeAttribute = cgfFieldSymbol.TypeSymbol.Attributes.GetAttribute<SerializeAttribute>();
-				isStandaloneFieldType = fieldTypeSerializeAttribute != null && fieldTypeSerializeAttribute.Flags == SerializeFlags.CallbackFullLine;
-			}
-
+            bool isStandaloneFieldType = IsStandaloneFieldType(cgfFieldSymbol);
             bool prependWithLogging = !isStandaloneFieldType 
-				&& ((isFirstField && isGlobalOrFrameData) || (!isFirstField && (previousSerializableFieldSymbol.Attributes.GetAttribute<GroupWithNextAttribute>() == null)));
+                && ((isFirstField && isGlobalOrFrameData) || (!isFirstField && (previousSerializableFieldSymbol.Attributes.GetAttribute<GroupWithNextAttribute>() == null)));
 
             ArrayAttribute arrayAttribute = fieldAttributes.GetAttribute<ArrayAttribute>();
             if (arrayAttribute != null)
@@ -167,23 +156,23 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
                 string indentation = indentationIncrement;
                 string arrayVariableName = variableName;
                 
-			    List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
+                List<ArrayDimension> arrayDimensions = arrayAttribute.Dimensions;
                 int arrayIndexCount = arrayDimensions.Count - 1;
-			    for (int i = arrayIndexCount; i >= 0; --i)
-			    {
-				    ArrayDimension dimension = arrayDimensions[i];
+                for (int i = arrayIndexCount; i >= 0; --i)
+                {
+                    ArrayDimension dimension = arrayDimensions[i];
                     string variableNameSuffix = new string('i', (arrayDimensions.Count - i));
                     string loopVariableName = new string('i', (arrayDimensions.Count - i));
 
                     string arraySize;
-				    if (dimension.IsFixedSize)
-				    {
+                    if (dimension.IsFixedSize)
+                    {
                         arraySize = dimension.SizeString;
-				    }
-				    else
-				    {
+                    }
+                    else
+                    {
                         arraySize = cgfTypeSymbol.VariableName + "." + dimension.SizeString;
-				    }
+                    }
 #>
 <#= indentation #>for(int <#= loopVariableName #> = 0; <#= loopVariableName #> < <#= arraySize #>; ++<#= loopVariableName #>)
 <#= indentation #>{
@@ -228,10 +217,10 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
                             } //IsGroupWithNext
                         } //IsSystemType
                     }
-			    }
+                }
 
                 for (int i = 0; i < arrayDimensions.Count; ++i)
-			    {
+                {
                     indentation = indentation.Remove(indentation.Length - indentationIncrement.Length);
 #>
 <#= indentation #>}
@@ -248,7 +237,7 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
 <#
             }
 
-			previousSerializableFieldSymbol = cgfFieldSymbol;
+            previousSerializableFieldSymbol = cgfFieldSymbol;
         }
 #>
 
@@ -257,5 +246,20 @@ std::ostream& operator<<(std::ostream& outputStream, const <#= cgfTypeSymbol.Nam
 
 /////////////////////////////////////////////////////////////////////////////////////
 <#
+    }
+#>
+<#+
+    /////////////////////////////////////////////////////////////////////////////////////
+    /// Function blocks
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    bool IsStandaloneFieldType(CGFFieldSymbol cgfFieldSymbol)
+    {
+        if (cgfFieldSymbol.TypeSymbol == null)
+            return false;
+
+        ExtendAttribute fieldTypeExtendAttribute = cgfFieldSymbol.TypeSymbol.Attributes.GetAttribute<ExtendAttribute>();
+        bool isStandaloneFieldType = fieldTypeExtendAttribute != null && fieldTypeExtendAttribute.Flags == SerializeFlags.CustomFullLine;
+        return isStandaloneFieldType;
     }
 #>

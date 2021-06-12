@@ -61,8 +61,11 @@ namespace CGFCodeGenerator.Core
         }
 
         public string Name { get { return m_TypeSymbol.Name; } }
+        public string GeneratedName { get { return HasGeneratedType ? m_TypeSymbol.Name + "_Generated" : m_TypeSymbol.Name; } }
         public string VariableName { get; }
         public bool IsEnum { get { return m_TypeSymbol.EnumUnderlyingType != null; } }
+
+        public bool HasGeneratedType { get { return Attributes.GetAttribute<ExtendAttribute>() != null; } }
 
         public CGFAttributeDataList Attributes { get { return m_AttributeDataList; } }
         public List<CGFFieldSymbol> Fields { get; }
