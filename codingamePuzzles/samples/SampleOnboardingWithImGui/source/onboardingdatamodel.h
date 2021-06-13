@@ -1,15 +1,11 @@
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////////////
-// System includes
-
 #if !defined(CODING_EXLUDESYSTEMHEADERS)
 #include <limits>
 #else
 CODING_EXLUDESYSTEMHEADERS#include <limits>
 #endif
 
-/////////////////////////////////////////////////////////////////////////////////////
 struct OnboardingDataModel
 {
     static constexpr int InvalidDistance = std::numeric_limits<int>::max();

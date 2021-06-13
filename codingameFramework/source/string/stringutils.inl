@@ -1,4 +1,4 @@
-inline std::vector<std::string> StringUtils::Split(const std::string& input, const char* delimiter)
+std::vector<std::string> StringUtils::Split(const std::string& input, const char* delimiter)
 {
     size_t index = input.find_first_not_of(delimiter);
     if (index == std::string::npos)
