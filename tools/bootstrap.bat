@@ -42,6 +42,8 @@ if %ERRORLEVEL% NEQ 0 (
 echo Calling generate_ProjectsAndCode.bat
 call generate_ProjectsAndCode.bat
 
+@echo off
+
 if %ERRORLEVEL% NEQ 0 ( 
     pause
     exit /B %ERRORLEVEL%
