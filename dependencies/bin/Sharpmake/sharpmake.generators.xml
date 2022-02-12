@@ -21,6 +21,40 @@
             <param name="dep">additional dependency clear of additional suffix</param>
             <returns>return boolean value of presence of a dep within the containing dependencies list</returns>
         </member>
+        <member name="T:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions">
+            <summary>
+            Format list options. Can combine many of them.
+            </summary>
+        </member>
+        <member name="F:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions.None">
+            <summary>
+            No formatting option
+            </summary>
+        </member>
+        <member name="F:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions.QuoteItems">
+            <summary>
+            Quote Items ?
+            </summary>
+        </member>
+        <member name="F:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions.UseSingleElementShortFormat">
+            <summary>
+            Use single element short format ?
+            </summary>
+        </member>
+        <member name="F:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions.UseCommaBetweenElements">
+            <summary>
+            Use Comma between each element ? 
+            </summary>
+        </member>
+        <member name="M:Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatList(System.Collections.Generic.List{System.String},System.Int32,Sharpmake.Generators.FastBuild.UtilityMethods.FBuildFormatListOptions)">
+            <summary>
+            Build a list of string in the format of BFF array, on multiple lines if needed, indenting using spaceLength spaces.
+            </summary>
+            <param name="items">The list of values to put in the BFF array.</param>
+            <param name="spaceLength">The indentation size, in spaces, in case multiple lines are generated.</param>
+            <param name="options">output options</param>
+            <returns>The formatted string, or <see cref="F:Sharpmake.Generators.FileGeneratorUtilities.RemoveLineTag"/> if the list is empty.</returns>
+        </member>
         <member name="T:Sharpmake.Generators.FastBuild.IClangPlatformBff">
             <summary>
             Augments the <see cref="T:Sharpmake.Generators.FastBuild.IPlatformBff"/> interface to provide services for platforms that
@@ -60,14 +94,6 @@
             Gets a configuration name for that platform in the .bff file for the code files that
             are written in native C++ code.
             </summary>
-        </member>
-        <member name="M:Sharpmake.Generators.FastBuild.IPlatformBff.AddLibPrefix(Sharpmake.Configuration)">
-            <summary>
-            Gets whether a library prefix (usually `lib`) is required on that platform when
-            building libraries.
-            </summary>
-            <param name="conf">The <see cref="T:Sharpmake.Configuration"/> under which the check is requested.</param>
-            <returns>`true` if a prefix is required, `false` otherwise.</returns>
         </member>
         <member name="M:Sharpmake.Generators.FastBuild.IPlatformBff.SetupExtraLinkerSettings(Sharpmake.Generators.IFileGenerator,Sharpmake.Project.Configuration,System.String)">
             <summary>
@@ -219,6 +245,101 @@
             when requested by addGeneratedFile.
             .cs, .xaml and other are threated as different items.
             </summary>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Generate(Sharpmake.Builder,Sharpmake.Project,System.String,System.Collections.Generic.IEnumerable{Sharpmake.Project.Configuration},System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.String})">
+            <summary>
+            Generate a launchSettings.json in a Properties subfolder of the csproj from the conf.CsprojUserFile
+            </summary>
+            <param name="builder">The builder to use</param>
+            <param name="project">The project the conf belong to</param>
+            <param name="projectPath">The path of the csproj</param>
+            <param name="configurations">The list of configurations to lookup for CsprojUserFile</param>
+            <param name="generatedFiles">Files written by the method</param>
+            <param name="skipFiles">Files already up-to-date and skipped</param>
+            <returns>The full path of the launchSettings.json</returns>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.GetJsonSerializerOptions">
+            <summary>
+            Get the formatting properties of the json
+            </summary>
+        </member>
+        <member name="T:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.JsonRoot">
+            <summary>
+            Represents the json root node
+            </summary>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.JsonRoot.profiles">
+            <summary>
+            The list of profiles, the key is the profile name
+            </summary>
+        </member>
+        <member name="T:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile">
+            <summary>
+            Represents an individual profile in the json
+            </summary>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile.commandName">
+            <summary>
+            Identifies the debug target to run.
+            </summary>
+            <remarks>
+            Mandatory argument.
+            </remarks>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile.commandLineArgs">
+            <summary>
+            The arguments to pass to the target being run.
+            </summary>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile.executablePath">
+            <summary>
+            An absolute or relative path to the executable.
+            </summary>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile.workingDirectory">
+            <summary>
+            Sets the working directory of the command.
+            </summary>
+        </member>
+        <member name="P:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.Profile.nativeDebugging">
+            <summary>
+            Set to true to enable native code debugging.
+            </summary>
+            <remarks>
+            Default: false
+            </remarks>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.GetCommandFromStartAction(Sharpmake.Project.Configuration.CsprojUserFileSettings.StartActionSetting)">
+            <summary>
+            Convert a CsprojUserFileSettings.StartActionSetting to a Profile.Command
+            </summary>
+            <param name="startActionSetting">The setting to convert</param>
+            <returns>The converted setting</returns>
+            <exception cref="T:System.NotSupportedException">Some values are not supported, so we'll throw if that's the case</exception>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.GetStringOrNullIfRemoveLineTag(System.String)">
+            <summary>
+            Helper method to convert the value of a string from CsprojUserFileSettings to the expected format of Profile
+            </summary>
+            <param name="value">The value read from CsprojUserFileSettings</param>
+            <returns>The converted value, or null if it was unset or empty</returns>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.GetProfileFromCsprojUserFileConf(Sharpmake.Project.Configuration.CsprojUserFileSettings)">
+            <summary>
+            Converts a CsprojUserFileSettings to a Profile
+            </summary>
+            <param name="csprojUserFileSettings">The CsprojUserFileSettings to convert</param>
+            <returns>The converted Profile</returns>
+            <exception cref="T:System.NotImplementedException">Throws in case an unsupported setting is passed</exception>
+        </member>
+        <member name="M:Sharpmake.Generators.VisualStudio.LaunchSettingsJson.GetLaunchSettingsFromCsprojUserFile(Sharpmake.Project,System.Collections.Generic.IEnumerable{Sharpmake.Project.Configuration},System.Boolean@)">
+            <summary>
+            Construct the list of profiles from the conf.CsprojUserFile from all configurations
+            </summary>
+            <param name="project">The project that the configurations belong to</param>
+            <param name="configurations">The list of configurations to lookup</param>
+            <param name="overwriteFile">Will be set to true if the file is allowed to be overwritten</param>
+            <returns>The list of profiles</returns>
         </member>
         <member name="F:Sharpmake.Generators.VisualStudio.ProjectJson.Template.BeginDependencyItem">
             <remarks>
